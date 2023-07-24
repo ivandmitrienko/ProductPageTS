@@ -1,6 +1,6 @@
 .icons{
     height: 70px;
-    animation: block-icons 0.15s ease-in-out;
+    animation: block-icons 0.35s linear;
     width: 60%;
     display: flex;
     justify-content: space-between;
@@ -9,6 +9,7 @@
     background-color: rgb(7, 56, 97);
     padding: 10px;
     cursor: pointer;
+    transition: block-icons 0.35s linear;
 }
 
 .icons img{
