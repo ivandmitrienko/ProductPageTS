@@ -1,39 +1,18 @@
-// const express = require("express");
-// const bodyParser = require("body-parser");
-// const itemRoutes = require("./routes/items");
-
-
-// const app = express();
-// const port = 3001;
-
-// app.use(bodyParser.json());
-
-// app.use("/items", itemRoutes);
-
-// app.use("/", (req, res) => {
-//   // res.json(itemData);
-//   res.sendStatus(408)
-// });
-
-// app.listen(port, () => {
-//   console.log(`Server started at port http://localhost:${port}`);
-// });
-
-
-const express = require("express");
-const fs = require("fs");
-    
-const app = express();
-// const jsonParser = express.json();
-  
-app.use(express.static(__dirname + "/public"));
-  
-const filePath = "users.json";
-app.get("/api/users", function(req, res){
-       
-    const content = fs.readFileSync(filePath,"utf8");
-    const users = JSON.parse(content);
-    res.send(users);
-});
+const MongoClient = require("mongodb").MongoClient;
  
-app.listen(3001);
+const mongoClient = new MongoClient("mongodb://127.0.0.1:27017/");
+async function run() {
+    try {
+        // Подключаемся к серверу
+        await mongoClient.connect();
+        console.log("Подключение установлено");
+        // взаимодействие с базой данных
+    }catch(err) {
+        console.log(err);
+    } finally {
+        // Закрываем подключение при завершении работы или при ошибке
+        await mongoClient.close();
+        console.log("Подключение закрыто");
+    }
+}
+run().catch(console.log);
