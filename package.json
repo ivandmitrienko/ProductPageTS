@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "concurrently \"npm run react\" \"npm run nodemon\"",
-    "react": "react-scripts start",
+    "react": "set PORT=8080 && react-scripts start",
     "build": "react-scripts build",
     "nodemon": "nodemon index.js"
   },
