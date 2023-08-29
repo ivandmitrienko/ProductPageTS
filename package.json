@@ -27,9 +27,9 @@
   },
   "scripts": {
     "start": "concurrently \"npm run react\" \"npm run nodemon\"",
-    "react": "set PORT=8080 && react-scripts start",
+    "react": "react-scripts start",
     "build": "react-scripts build",
-    "nodemon": "nodemon index.js"
+    "nodemon": "nodemon app.js"
   },
   "eslintConfig": {
     "extends": [
