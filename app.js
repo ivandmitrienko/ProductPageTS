@@ -1,20 +1,56 @@
-const MongoClient = require("mongodb").MongoClient;
-   
-const url = "mongodb://127.0.0.1:27018/";
-const mongoClient = new MongoClient(url);
- 
-async function run() {
-    try {
-        await mongoClient.connect();
-        const db = mongoClient.db("usersdb");
-        const collection = db.collection("users");
-        const result = await collection.updateOne({name: "Tom"}, { $set: {name: "Tom Junior", age:33}});
-        console.log(result);
-         
-    }catch(err) {
-        console.log(err);
-    } finally {
-        await mongoClient.close();
-    }
+const mongoose = require("mongoose");
+const express = require("express");
+const Schema = mongoose.Schema;
+const app = express();
+const jsonParser = express.json();
+
+const {
+  getProduct, 
+  getProducts, 
+  saveProduct, 
+  deleteProduct, 
+  updateProduct
+} = require("./controllers/controllers")
+
+const productScheme = new Schema(
+  {
+    nameOfProduct: String,
+    nameOfPrice: Number,
+    image: String,
+    count: Number,
+  },
+  { versionKey: false }
+);
+const Product = mongoose.model("Product", productScheme);
+
+async function main() {
+  try {
+    await mongoose.connect("mongodb://127.0.0.1:27017/productsdb");
+    app.listen(3000);
+    console.log("Сервер ожидает подключения...");
+  } catch (err) {
+    return console.log(err);
+  }
 }
-run().catch(console.error);
+// получаем все продукты
+app.get("/", getProducts);
+// получаем один продукт по id
+app.get("/ProductDescription/:id", getProduct);
+// сохраняем в бд
+app.post("/", jsonParser, saveProduct);
+// удаляем по id
+app.delete("/ProductDescription/:id", deleteProduct);
+// обновляем данные пользователя по id
+app.put("/", jsonParser, updateProduct);
+
+main();
+// прослушиваем прерывание работы программы (ctrl-c)
+process.on("SIGINT", async () => {
+  await mongoose.disconnect();
+  console.log("Приложение завершило работу");
+  process.exit();
+});
+
+module.exports = {
+    Product,
+  };
