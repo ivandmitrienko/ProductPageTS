@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const express = require("express");
-const Schema = mongoose.Schema;
+const cors = require('cors')
 const app = express();
 const jsonParser = express.json();
 
@@ -12,32 +12,24 @@ const {
   updateProduct
 } = require("./controllers/controllers")
 
-const productScheme = new Schema(
-  {
-    nameOfProduct: String,
-    nameOfPrice: Number,
-    image: String,
-    count: Number,
-  },
-  { versionKey: false }
-);
-const Product = mongoose.model("Product", productScheme);
+app.use(cors());
 
 async function main() {
   try {
     await mongoose.connect("mongodb://127.0.0.1:27017/productsdb");
-    app.listen(3000);
-    console.log("Сервер ожидает подключения...");
+    app.listen(3001);
+    console.log('Сервер ожидает подключения на порту:3001');
   } catch (err) {
     return console.log(err);
   }
 }
+
 // получаем все продукты
-app.get("/", getProducts);
+app.get("/products", getProducts);
 // получаем один продукт по id
 app.get("/ProductDescription/:id", getProduct);
 // сохраняем в бд
-app.post("/", jsonParser, saveProduct);
+app.post("/products", jsonParser, saveProduct);
 // удаляем по id
 app.delete("/ProductDescription/:id", deleteProduct);
 // обновляем данные пользователя по id
@@ -51,6 +43,3 @@ process.on("SIGINT", async () => {
   process.exit();
 });
 
-module.exports = {
-    Product,
-  };

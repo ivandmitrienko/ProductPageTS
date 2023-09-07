@@ -1,14 +1,16 @@
 import { Constants } from 'components/actions/actions';
 import { IAction, IProducts } from 'types';
 
-const defaultState:IProducts = {
-    products:[],
+const defaultState: IProducts = {
+    products: [],
 }
 
-export function products(state: IProducts = defaultState, action:IAction) {
+export function products(state: IProducts = defaultState, action: IAction) {
     switch (action.type) {
         case Constants.ADD_PRODUCT:
             return { ...state, products: [...state.products, action.product] };
+        case Constants.GET_PRODUCTS:
+            return { ...state, ...products };
         case Constants.DELETE_PRODUCT:
             return { ...state, products: state.products.filter((product, index) => index !== action.index) };
         case Constants.ADD_PRODUCT_COUNT:
@@ -23,7 +25,7 @@ export function products(state: IProducts = defaultState, action:IAction) {
             const lesCountOfFoundProduct = [
                 ...state.products.slice(0, action.index),
                 reduceCountOfProduct,
-                ...state.products.slice(action.index  + 1)];
+                ...state.products.slice(action.index + 1)];
             return { ...state, products: lesCountOfFoundProduct };
         default:
             return state;

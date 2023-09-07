@@ -1,4 +1,17 @@
-const { Product } = require("../app.js");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const productScheme = new Schema(
+  {
+    nameOfProduct: String,
+    nameOfPrice: Number,
+    image: String,
+    count: Number,
+  },
+  { versionKey: false }
+);
+
+const Product = mongoose.model("Product", productScheme);
 
 const getProducts = async (req, res) => {
   const products = await Product.find({});
@@ -15,8 +28,8 @@ const getProduct = async (req, res) => {
 const saveProduct = async (req, res) => {
   if (!req.body) return res.sendStatus(400);
 
-  const name = req.body.name;
-  const price = req.body.price;
+  const name = req.body.nameOfProduct;
+  const price = req.body.nameOfPrice;
   const image = req.body.image;
   const count = req.body.count;
 
