@@ -3,10 +3,11 @@ import { Constants } from "./actions";
 import axios from "../../utils/config";
 import { Dispatch } from "react";
 
-interface DispatchAction {
+export interface DispatchAction {
   product?: Product,
   type: Constants
 }
+
 
 export const addNewProduct = ({ nameOfProduct, nameOfPrice, image, count, id }: Product) => {
   return (dispatch: Dispatch<DispatchAction>) => {
@@ -29,23 +30,23 @@ export const addNewProduct = ({ nameOfProduct, nameOfPrice, image, count, id }: 
   };
 };
 
-// export const getProducts = () => {
-//   return (dispatch: Dispatch<DispatchAction>) => {
-//     axios
-//       .get('/products')
-//       .then((res) => {
-//         console.log(res.data)
-//       })
-      // .catch((err) => {
-      //   dispatch(addTodoFailure(err.message));
-      // });
-//   }
-// }
+export const getProducts = () => {
+  return (dispatch: Dispatch<DispatchAction>) => {
+    axios
+      .get('/products')
+      .then((res) => {
+       dispatch(addProducts(res.data))
+      })
+      .catch((err) => {
+        dispatch(addTodoFailure(err.message));
+      });
+  }
+}
 
-// const addProducts = (products: Product[]) => ({
-//   type: Constants.GET_PRODUCTS,
-//   products
-// })
+const addProducts = (products: Product[]) => ({
+  type: Constants.GET_PRODUCTS,
+  products
+})
 
 const addTodoSuccess = (product: Product) => ({
   type: Constants.ADD_PRODUCT,

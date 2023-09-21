@@ -1,16 +1,24 @@
-import React, { PureComponent } from 'react';
+import React, { Component} from 'react';
 import { Routes, Route } from "react-router-dom";
 import ProductList from './ProductList';
 import Layout from './Layout';
 import styles from './App.module.scss';
 import Product from './Product';
-// import { getProducts } from './actions/product-actions';
+import { ThunkDispatch } from 'redux-thunk';
+import { Action } from 'redux';
+import { connect } from 'react-redux';
+import { getProducts } from './actions/product-actions';
 
-export default class App extends PureComponent {
+interface IProps {
+  getProducts: ()=>void;
+}
 
-  // componentDidMount(): void {
-  //   getProducts();
-  // }
+class App extends Component<IProps>{
+
+  componentDidMount() {
+    this.props.getProducts();
+  }
+
   render() {
     return (
       <div className={styles.app}>
@@ -24,3 +32,9 @@ export default class App extends PureComponent {
     )
   }
 }
+
+const mapDispatchToProps=(dispatch: ThunkDispatch<undefined, undefined, Action>)=>({
+getProducts:() => dispatch(getProducts())
+})
+
+export default connect(null, mapDispatchToProps)(App)

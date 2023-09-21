@@ -6,5 +6,6 @@ type ConstantsValues = `${Constants}`;
 export interface IAction {
     type: ConstantsValues,
     product:Product,
-    index: number
+    index: number,
+    products:Product[]
 }

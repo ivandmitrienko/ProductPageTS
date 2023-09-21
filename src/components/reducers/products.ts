@@ -10,7 +10,7 @@ export function products(state: IProducts = defaultState, action: IAction) {
         case Constants.ADD_PRODUCT:
             return { ...state, products: [...state.products, action.product] };
         case Constants.GET_PRODUCTS:
-            return { ...state, ...products };
+            return { ...state,products:[...action.products] };
         case Constants.DELETE_PRODUCT:
             return { ...state, products: state.products.filter((product, index) => index !== action.index) };
         case Constants.ADD_PRODUCT_COUNT:
