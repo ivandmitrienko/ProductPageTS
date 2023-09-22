@@ -10,7 +10,7 @@ const ProductFunc: React.FC = () => {
   const product = useSelector(
     (state: RootState) => {
       return state.products.products.find(
-        (product: Product) => String(product.id) === id
+        (product: Product) => product._id === id
       )
     }
   );

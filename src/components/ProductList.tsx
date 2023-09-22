@@ -4,8 +4,6 @@ import Items from './Items';
 import style from './Layout.module.scss';
 import { RootState, Product } from 'types';
 
-// type ProductListReduce = number[];
-
 class ProductList extends PureComponent<StateProps> {
 
   render() {
@@ -15,6 +13,7 @@ class ProductList extends PureComponent<StateProps> {
           key={index}
           product = {product}
           index={index}
+          _id={product._id}
         />)}
         {this.props.products.length ?
           <div className={style.totalPrice}>

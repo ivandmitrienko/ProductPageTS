@@ -6,7 +6,11 @@ import Quantity from './Quantity';
 import style from './Layout.module.scss';
 import { connect } from 'react-redux';
 import { Constants } from './actions/actions';
-import { RootState, Product } from 'types';;
+import { RootState, Product } from 'types';
+import { addNewProductToBase } from './actions/product-actions';
+import { ThunkDispatch } from 'redux-thunk';
+import { Action } from 'redux';
+;
 
 interface IState {
     displayIcons: boolean,
@@ -44,18 +48,17 @@ class Layout extends PureComponent<LayoutProps, IState> {
         }
     };
 
- 
+
 
     addProduct = () => {
         if (this.nameProduct.current?.value && this.namePrice.current?.value && this.state.image) {
             this.props.addName(
-               {
-                nameOfProduct: this.nameProduct.current.value,
-                nameOfPrice: Number(this.namePrice.current?.value),
-                image: this.state.image,
-                count:this.props.count,
-                id:new Date()
-               }
+                {
+                    nameOfProduct: this.nameProduct.current.value,
+                    nameOfPrice: Number(this.namePrice.current?.value),
+                    image: this.state.image,
+                    count: this.props.count,
+                }
             );
             this.nameProduct.current.value = '';
             this.namePrice.current.value = '';
@@ -134,21 +137,14 @@ class Layout extends PureComponent<LayoutProps, IState> {
 
 interface DispatchAction {
     product?: Product,
-    type: Constants
+    type?: Constants
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<DispatchAction>) => ({
-    addName: ({ nameOfProduct, nameOfPrice, image, count, id }: Product) => {
-        dispatch({
-            type: Constants.ADD_PRODUCT,
-            product: {
-                nameOfProduct,
-                nameOfPrice,
-                image,
-                count,
-                id
-            }
-        });
+type MyExtraArg = undefined;
+
+const mapDispatchToProps = (dispatch: Dispatch<DispatchAction> | ThunkDispatch<Product, MyExtraArg, Action>) => ({
+    addName: ({ nameOfProduct, nameOfPrice, image, count}: Product) => {
+        dispatch(addNewProductToBase({ nameOfProduct, nameOfPrice, image, count }));
         dispatch({
             type: Constants.RESTART_COUNT,
         });
