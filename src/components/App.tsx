@@ -7,7 +7,7 @@ import Product from './Product';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { connect } from 'react-redux';
-import { getProducts } from './actions/product-actions';
+import { getProductsFromBase } from './actions/product-actions';
 
 interface IProps {
   getProducts: ()=>void;
@@ -34,7 +34,7 @@ class App extends Component<IProps>{
 }
 
 const mapDispatchToProps=(dispatch: ThunkDispatch<undefined, undefined, Action>)=>({
-getProducts:() => dispatch(getProducts())
+getProducts:() => dispatch(getProductsFromBase())
 })
 
 export default connect(null, mapDispatchToProps)(App)

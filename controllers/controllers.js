@@ -53,11 +53,11 @@ const deleteProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   if (!req.body) return res.sendStatus(400);
-  const id = req.body.id;
-  const name = req.body.name;
-  const price = req.body.price;
-  const image = req.body.image;
-  const count = req.body.count;
+  const id = req.body.product._id;
+  const name = req.body.product.nameOfProduct;
+  const price = req.body.product.nameOfPrice;
+  const image = req.body.product.image;
+  const count = req.body.product.count+1;
   const newProduct = {
     nameOfProduct: name,
     nameOfPrice: price,

@@ -7,12 +7,16 @@ import Quantity from './Quantity';
 import { NavLink } from 'react-router-dom';
 import { Constants } from './actions/actions';
 import { Product } from 'types';
+import { Types } from 'mongoose';
+import { ThunkDispatch } from 'redux-thunk';
+import { Action } from 'redux';
+import { addCountofProductToBase, deleteProductFromBase } from './actions/product-actions';
 
 
 class Items extends PureComponent<ItemsProps> {
 
     setMoreCount = () => {
-        this.props.addCountofProduct(this.props.index);
+        this.props.addCountofProduct(this.props.product);
     }
 
     setLessCount = () => {
@@ -24,7 +28,7 @@ class Items extends PureComponent<ItemsProps> {
     };
 
     deleteProduct = () => {
-        this.props.deleteProduct(this.props.index);
+        this.props.deleteProduct(this.props._id);
     }
 
     render() {
@@ -51,8 +55,7 @@ class Items extends PureComponent<ItemsProps> {
                     <AiFillCloseCircle size={25} onClick={this.deleteProduct} />
                     <div className={style.moreInformation}>
                         <NavLink
-                            to={`/ProductDescription/${this.props.product.id}`}
-                            // state={{product:this.props.product}}
+                            to={`/ProductDescription/${this.props.product._id}`}
                             style={{ color: 'white' }}
                         >
                             <TbFileDescription size={25} />
@@ -65,17 +68,15 @@ class Items extends PureComponent<ItemsProps> {
 }
 
 interface DispatchAction{
-    index:number,
-    type:Constants,
-
+    index?:number,
+    type?:Constants,
+    _id?:Types.ObjectId,
+    product?:Product
 }
 
-const mapDispatchToProps = (dispatch:Dispatch<DispatchAction>) => ({
-    addCountofProduct: (index:number) => {
-        dispatch({
-            type: Constants.ADD_PRODUCT_COUNT,
-            index: index
-        })
+const mapDispatchToProps = (dispatch:Dispatch<DispatchAction> | ThunkDispatch<undefined, undefined, Action>) => ({
+    addCountofProduct: (product:Product) => {
+        dispatch(addCountofProductToBase(product))
     },
     reduceCountofProduct: (index:number) => {
         dispatch({
@@ -83,11 +84,8 @@ const mapDispatchToProps = (dispatch:Dispatch<DispatchAction>) => ({
             index: index
         })
     },
-    deleteProduct: (index:number) => {
-        dispatch({
-            type: Constants.DELETE_PRODUCT,
-            index: index
-        })
+    deleteProduct: (_id?:Types.ObjectId) => {
+        dispatch(deleteProductFromBase(_id));    
     },
 });
 
@@ -96,7 +94,8 @@ type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 type Props = {
     index:number,
     product:Product,
-    key:number
+    key:number,
+    _id?:Types.ObjectId
 }
 
 type ItemsProps = DispatchProps & Props

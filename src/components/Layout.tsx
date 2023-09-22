@@ -7,7 +7,7 @@ import style from './Layout.module.scss';
 import { connect } from 'react-redux';
 import { Constants } from './actions/actions';
 import { RootState, Product } from 'types';
-import { addNewProduct } from './actions/product-actions';
+import { addNewProductToBase } from './actions/product-actions';
 import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 ;
@@ -58,7 +58,6 @@ class Layout extends PureComponent<LayoutProps, IState> {
                     nameOfPrice: Number(this.namePrice.current?.value),
                     image: this.state.image,
                     count: this.props.count,
-                    id: new Date()
                 }
             );
             this.nameProduct.current.value = '';
@@ -144,8 +143,8 @@ interface DispatchAction {
 type MyExtraArg = undefined;
 
 const mapDispatchToProps = (dispatch: Dispatch<DispatchAction> | ThunkDispatch<Product, MyExtraArg, Action>) => ({
-    addName: ({ nameOfProduct, nameOfPrice, image, count, id }: Product) => {
-        dispatch(addNewProduct({ nameOfProduct, nameOfPrice, image, count, id }));
+    addName: ({ nameOfProduct, nameOfPrice, image, count}: Product) => {
+        dispatch(addNewProductToBase({ nameOfProduct, nameOfPrice, image, count }));
         dispatch({
             type: Constants.RESTART_COUNT,
         });

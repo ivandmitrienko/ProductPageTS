@@ -1,11 +1,12 @@
-import store from "components/store"
+import store from "components/store";
+import { Types } from 'mongoose';
 
 export type Product =  {
     nameOfProduct: string,
     nameOfPrice: number,
     image: string,
     count: number,
-    id: Date
+    _id?:Types.ObjectId
 }
 
 export interface IProducts {
